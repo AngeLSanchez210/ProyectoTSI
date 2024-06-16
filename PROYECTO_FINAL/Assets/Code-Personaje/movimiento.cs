@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class movimiento : MonoBehaviour
 {
-    public Rigidbody body;
-    public float potenciaSalto = 10f; // Ajustado para que el salto sea más notable
-    public Transform tf;
-    public float distancia = 0.5f; // Ajustado para detectar mejor el suelo
-    public LayerMask suelo;
-    private bool esSuelo;
+
 
     public float velocidad = 7f;
     public float rotacion = 250f;
@@ -17,12 +12,19 @@ public class movimiento : MonoBehaviour
     public Animator ani;
 
     private float x, y;
+    public Rigidbody rb;
+    public float impulso= 5;
+
+
+    public bool canSalto;
+    
+
+
 
     void Start()
     {
         ani = GetComponent<Animator>();
-        body = GetComponent<Rigidbody>();
-        tf = transform;
+       
     }
 
     void Update()
@@ -47,17 +49,25 @@ public class movimiento : MonoBehaviour
             ani.SetBool("pulsado", true);
         }
 
-        esSuelo = Physics.CheckSphere(tf.position, distancia, suelo);
 
-        if (Input.GetKeyDown(KeyCode.Space) && esSuelo)
+        if (canSalto )
         {
-            ani.Play("Jump");
-        }
-    }
+            if (Input.GetKeyDown(KeyCode.Space)){
 
-    // Este método será llamado por el evento de animación
-    public void ApplyJumpForce()
-    {
-        body.AddForce(Vector3.up * potenciaSalto, ForceMode.Impulse);
+                ani.SetBool("saltando",true);
+
+                rb.AddForce(new Vector3(0, impulso, 0),ForceMode.Impulse); 
+
+            }
+            ani.SetBool("essuelo", true);
+        }
+        else
+        {
+            ani.SetBool("saltando", false);
+            ani.SetBool("essuelo", false);
+        }
+
+
+
     }
 }
