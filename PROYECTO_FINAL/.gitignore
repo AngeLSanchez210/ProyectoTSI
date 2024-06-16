@@ -107,8 +107,7 @@ sysinfo.txt
 # Unity3D Generated File On Error Reports
 *.unityproj
 
-# Unity3D Generated File On Locks
-*.meta
+
 
 # Unity3D Generated File On Render Reports
 *.unity
