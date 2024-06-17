@@ -4,27 +4,18 @@ using UnityEngine;
 
 public class movimiento : MonoBehaviour
 {
-
-
     public float velocidad = 7f;
     public float rotacion = 250f;
-
     public Animator ani;
-
     private float x, y;
     public Rigidbody rb;
-    public float impulso= 5;
-
-
+    public float impulso = 5;
     public bool canSalto;
-    
-
-
+    public Camera cam; // Añadido: referencia a la cámara
 
     void Start()
     {
         ani = GetComponent<Animator>();
-       
     }
 
     void Update()
@@ -32,8 +23,26 @@ public class movimiento : MonoBehaviour
         x = Input.GetAxis("Horizontal");
         y = Input.GetAxis("Vertical");
 
-        transform.Rotate(0, x * Time.deltaTime * rotacion, 0);
-        transform.Translate(0, 0, y * Time.deltaTime * velocidad);
+        if (y != 0)
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 target = hit.point;
+                target.y = transform.position.y; // Mantén la altura del personaje
+                Vector3 direction = (target - transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, rotacion * Time.deltaTime);
+            }
+
+            transform.Translate(0, 0, y * Time.deltaTime * velocidad);
+        }
+        else
+        {
+            transform.Rotate(0, x * Time.deltaTime * rotacion, 0);
+        }
 
         ani.SetFloat("VelX", x);
         ani.SetFloat("VelY", y);
@@ -49,15 +58,12 @@ public class movimiento : MonoBehaviour
             ani.SetBool("pulsado", true);
         }
 
-
-        if (canSalto )
+        if (canSalto)
         {
-            if (Input.GetKeyDown(KeyCode.Space)){
-
-                ani.SetBool("saltando",true);
-
-                rb.AddForce(new Vector3(0, impulso, 0),ForceMode.Impulse); 
-
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ani.SetBool("saltando", true);
+                rb.AddForce(new Vector3(0, impulso, 0), ForceMode.Impulse);
             }
             ani.SetBool("essuelo", true);
         }
@@ -66,8 +72,5 @@ public class movimiento : MonoBehaviour
             ani.SetBool("saltando", false);
             ani.SetBool("essuelo", false);
         }
-
-
-
     }
 }
