@@ -72,5 +72,17 @@ public class movimiento : MonoBehaviour
             ani.SetBool("saltando", false);
             ani.SetBool("essuelo", false);
         }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            transform.Translate(0, 0, y * Time.deltaTime * velocidad * 2f); 
+            ani.SetBool("corriendo", true);
+        }
+        else
+        {
+            transform.Translate(0, 0, y * Time.deltaTime * velocidad);
+            ani.SetBool("corriendo", false);
+        }
+
     }
 }
