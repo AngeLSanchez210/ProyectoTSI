@@ -24,6 +24,11 @@ public class menuControl : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 
+    public void Parkour()
+    {
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+    }
     public void salir()
     {
         Application.Quit();
