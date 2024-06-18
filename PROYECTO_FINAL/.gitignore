@@ -109,8 +109,7 @@ sysinfo.txt
 
 
 
-# Unity3D Generated File On Render Reports
-*.unity
+
 
 # Unity3D Generated File On Crash Reports
 *.unitypackage
